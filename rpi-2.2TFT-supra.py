@@ -30,7 +30,6 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
-
 class Btn(Enum):
     TRIGON = 24
     X = 5
@@ -38,14 +37,6 @@ class Btn(Enum):
     SQUARE = 22
     L = 17
     R = 4
-
-# btns = (btn_trigon,
-#         btn_x,
-#         btn_circle,
-#         btn_square,
-#         btn_l,
-#         btn_r
-#         )
 
 # setup GPIO
 GPIO.setup(Btn.TRIGON.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Trigon Button for GPIO24
@@ -59,30 +50,21 @@ GPIO.setup(Btn.R.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # R Button for GPIO4
 
 print('listen for key event...')
 
+pressed = set()
+
 while True:
-    if GPIO.input(pressed):
-        print("reset pressed: " + pressed)
-        pressed = None
+    for btn in set(pressed):
+        if GPIO.input(btn.value):
+            print("relesed btn: " + str(btn) + " in pressed: " + str(pressed))
+            pressed.remove(btn)
+    
     if pressed:
-        print("pass >>>")
-        pressed = False
         continue
 
     for btn in Btn:
         if not GPIO.input(btn.value):
-            pressed = True
-            print(btn)
+            pressed.add(btn)
+            print("pressed btn: "+str(btn)+ " to pressed: " + str(pressed))
 
-    # if not GPIO.input(btn_r):  # Fire button pressed
-    #     print('r')
-    # if not GPIO.input(btn_trigon):  # Up button pressed
-    #     print('t')
-    # if not GPIO.input(btn_x):  # Down button pressed
-    #     print('x')
-    # if not GPIO.input(btn_l):  # Left button pressed
-    #     print('l')
-    # if not GPIO.input(btn_square):  # Right button pressed
-    #     print('s')
-    # if not GPIO.input(btn_circle):  # Right button pressed
-    #     print('c')
-    time.sleep(.04)
+    time.sleep(0.04)
+    # time.sleep(1)
