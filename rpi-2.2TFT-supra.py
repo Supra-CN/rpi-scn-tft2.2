@@ -1,4 +1,6 @@
-""" rpi-2.2TFT-kbrd.py by ukonline2000 2015.12.08
+#!/usr/bin/env python3
+
+""" rpi-2.2TFT-supra.py by supra 2019.03.2
 GPIO Keyboard driver for Raspberry Pi 2.2TFT for use with 5 Buttons
 requires uinput kernel module (sudo modprobe uinput)
 requires python-uinput (git clone https://github.com/tuomasjjrasanen/python-uinput)
@@ -21,9 +23,6 @@ $sudo python rpi-2.2TFT-kbrd.py
 
 """
 
-
-
-import uinput
 import time
 import RPi.GPIO as GPIO
 
@@ -36,6 +35,10 @@ btn_square = 22
 btn_l = 17
 btn_r = 4
 
+btn = (btn_trigon,
+       btn_x
+)
+
 # Up, Down, left, right, fire
 GPIO.setup(btn_trigon, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #Trigon Button for GPIO24
 GPIO.setup(btn_x, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #X Button for GPIO5
@@ -44,11 +47,22 @@ GPIO.setup(btn_square, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #Square Button for GP
 GPIO.setup(btn_l, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #L Button for GPIO17
 GPIO.setup(btn_r, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #R Button for GPIO4
 
-events = (uinput.KEY_UP, uinput.KEY_DOWN, uinput.KEY_LEFT, uinput.KEY_RIGHT, uinput.KEY_LEFTCTRL)
+# events = (uinput.KEY_UP, uinput.KEY_DOWN, uinput.KEY_LEFT, uinput.KEY_RIGHT, uinput.KEY_LEFTCTRL)
 
-# device = uinput.Device(events)
+
+
+print('listen for key event...')
 
 while True:
+  if GPIO.input(pressed)
+    print("reset pressed: " + pressed)
+    pressed = None
+  if pressed:
+    print("pass >>>")
+    pressed = False
+    continue
+  for (i in )
+  pressed = True
   if not GPIO.input(btn_r):  # Fire button pressed
     print('r')
   if not GPIO.input(btn_trigon):  # Up button pressed
@@ -62,3 +76,4 @@ while True:
   if not GPIO.input(btn_circle):  # Right button pressed
     print('c')
   time.sleep(.04)
+
