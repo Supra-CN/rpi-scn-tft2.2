@@ -24,56 +24,65 @@ $sudo python rpi-2.2TFT-kbrd.py
 """
 
 import time
+from enum import Enum
+
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
-btn_trigon = 24
-btn_x = 5
-btn_circle = 23
-btn_square = 22
-btn_l = 17
-btn_r = 4
 
-btn = (btn_trigon,
-       btn_x
-)
+class Btn(Enum):
+    TRIGON = 24
+    X = 5
+    CIRCLE = 23
+    SQUARE = 22
+    L = 17
+    R = 4
 
-# Up, Down, left, right, fire
-GPIO.setup(btn_trigon, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #Trigon Button for GPIO24
-GPIO.setup(btn_x, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #X Button for GPIO5
-GPIO.setup(btn_circle, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #Circle Button for GPIO23
-GPIO.setup(btn_square, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #Square Button for GPIO22
-GPIO.setup(btn_l, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #L Button for GPIO17
-GPIO.setup(btn_r, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #R Button for GPIO4
+# btns = (btn_trigon,
+#         btn_x,
+#         btn_circle,
+#         btn_square,
+#         btn_l,
+#         btn_r
+#         )
+
+# setup GPIO
+GPIO.setup(Btn.TRIGON.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Trigon Button for GPIO24
+GPIO.setup(Btn.X.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # X Button for GPIO5
+GPIO.setup(Btn.CIRCLE.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Circle Button for GPIO23
+GPIO.setup(Btn.SQUARE.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Square Button for GPIO22
+GPIO.setup(Btn.L.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # L Button for GPIO17
+GPIO.setup(Btn.R.value, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # R Button for GPIO4
 
 # events = (uinput.KEY_UP, uinput.KEY_DOWN, uinput.KEY_LEFT, uinput.KEY_RIGHT, uinput.KEY_LEFTCTRL)
-
-
 
 print('listen for key event...')
 
 while True:
-  if GPIO.input(pressed)
-    print("reset pressed: " + pressed)
-    pressed = None
-  if pressed:
-    print("pass >>>")
-    pressed = False
-    continue
-  for (i in )
-  pressed = True
-  if not GPIO.input(btn_r):  # Fire button pressed
-    print('r')
-  if not GPIO.input(btn_trigon):  # Up button pressed
-    print('t')
-  if not GPIO.input(btn_x):  # Down button pressed
-    print('x')
-  if not GPIO.input(btn_l):  # Left button pressed
-    print('l')
-  if not GPIO.input(btn_square):  # Right button pressed
-    print('s')
-  if not GPIO.input(btn_circle):  # Right button pressed
-    print('c')
-  time.sleep(.04)
+    if GPIO.input(pressed):
+        print("reset pressed: " + pressed)
+        pressed = None
+    if pressed:
+        print("pass >>>")
+        pressed = False
+        continue
 
+    for btn in Btn:
+        if not GPIO.input(btn.value):
+            pressed = True
+            print(btn)
+
+    # if not GPIO.input(btn_r):  # Fire button pressed
+    #     print('r')
+    # if not GPIO.input(btn_trigon):  # Up button pressed
+    #     print('t')
+    # if not GPIO.input(btn_x):  # Down button pressed
+    #     print('x')
+    # if not GPIO.input(btn_l):  # Left button pressed
+    #     print('l')
+    # if not GPIO.input(btn_square):  # Right button pressed
+    #     print('s')
+    # if not GPIO.input(btn_circle):  # Right button pressed
+    #     print('c')
+    time.sleep(.04)
