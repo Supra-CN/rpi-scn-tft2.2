@@ -47,7 +47,7 @@ class Btn(Enum):
     CIRCLE = gpiozero.Button(23, pin_factory=pin_factory)
     SQUARE = gpiozero.Button(22, pin_factory=pin_factory)
     L = gpiozero.Button(17, pin_factory=pin_factory)
-    R = gpiozero.Button(4, pin_factory=pin_factory)
+#    R = gpiozero.Button(4, pin_factory=pin_factory)
 
 
 def onBtnPressed(gbtn: gpiozero.Button):
