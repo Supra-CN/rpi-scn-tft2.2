@@ -32,6 +32,8 @@ import signal
 import requests
 
 pin_factory = None
+
+
 # pin_factory = MockFactory()
 
 
@@ -50,7 +52,7 @@ def get_host_ip():
     return ip
 
 
-class Btn(Enum):
+class Btn():
     TRIGON = gpiozero.Button(24, pin_factory=pin_factory)
     X = gpiozero.Button(5, pin_factory=pin_factory)
     CIRCLE = gpiozero.Button(23, pin_factory=pin_factory)
@@ -62,11 +64,15 @@ class Btn(Enum):
 def on_btn_pressed(gbtn: gpiozero.Button):
     print("on Btn pressed: " + str(gbtn.pin))
     return {
-        Btn.X.value.pin: on_x()
-    }[gbtn.pin]
+        Btn.X.value: on_btn_x()
+    }.get(gbtn, on_btn_no_impl())
 
 
-def on_x():
+def on_btn_no_impl():
+    print("no impl")
+
+
+def on_btn_x():
     ip = get_host_ip()
     print("on_x ip: " + ip)
     params = {'host': ip}
