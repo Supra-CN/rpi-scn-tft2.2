@@ -52,7 +52,7 @@ def get_host_ip():
     return ip
 
 
-class Btn():
+class Btn(Enum):
     TRIGON = gpiozero.Button(24, pin_factory=pin_factory)
     X = gpiozero.Button(5, pin_factory=pin_factory)
     CIRCLE = gpiozero.Button(23, pin_factory=pin_factory)
