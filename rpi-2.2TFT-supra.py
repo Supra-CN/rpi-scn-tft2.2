@@ -23,18 +23,32 @@ $sudo ./rpi-2.2TFT-supra.py
 
 """
 
+import socket
 from enum import Enum
 import gpiozero
 from gpiozero.pins.pigpio import PiGPIOFactory
 from gpiozero.pins.mock import MockFactory
 import signal
+import requests
 
 pin_factory = None
-
-
 # pin_factory = MockFactory()
+
+
 # pin_factory=PiGPIOFactory(host='172.24.115.124')
 # pin_factory="172.24.115.124"
+
+
+def get_host_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+
+    return ip
+
 
 class Btn(Enum):
     TRIGON = gpiozero.Button(24, pin_factory=pin_factory)
@@ -45,12 +59,25 @@ class Btn(Enum):
     # R = gpiozero.Button(4, pin_factory=pin_factory)
 
 
-def onBtnPressed(gbtn: gpiozero.Button):
+def on_btn_pressed(gbtn: gpiozero.Button):
     print("on Btn pressed: " + str(gbtn.pin))
+    return {
+        Btn.X.value.pin: on_x()
+    }[gbtn.pin]
+
+
+def on_x():
+    ip = get_host_ip()
+    print("on_x ip: " + ip)
+    params = {'host': ip}
+    r = requests.get("http://rpi.supra.tw/update.php", params=params)
+    print(r)
 
 
 for btn in Btn:
-    btn.value.when_pressed = onBtnPressed
+    btn.value.when_pressed = on_btn_pressed
+
+# on_x()
 
 print('listen for key event...')
 signal.pause()
