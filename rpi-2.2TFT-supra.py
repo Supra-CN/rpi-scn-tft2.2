@@ -23,6 +23,7 @@ $sudo ./rpi-2.2TFT-supra.py
 
 """
 
+import RPi.GPIO as GPIO
 import socket
 from enum import Enum
 import gpiozero
@@ -32,14 +33,12 @@ import signal
 import requests
 
 pin_factory = None
-
+GPIO.setmode(GPIO.BCM)
 
 # pin_factory = MockFactory()
 
-
 # pin_factory=PiGPIOFactory(host='172.24.115.124')
 # pin_factory="172.24.115.124"
-
 
 def get_host_ip():
     try:
@@ -66,6 +65,10 @@ def on_btn_pressed(gbtn: gpiozero.Button):
 
     if gbtn == Btn.X.value:
         on_btn_x()
+    elif gbtn == Btn.CIRCLE.value:
+        on_btn_o()
+    elif gbtn == Btn.SQUARE.value:
+        on_btn_d()
     else:
         on_btn_no_impl()
 
@@ -74,12 +77,20 @@ def on_btn_no_impl():
     print("no impl")
 
 
-def on_btn_x():
+def on_btn_o():
     ip = get_host_ip()
-    print("on_x ip: " + ip)
+    print("ip: " + ip)
     params = {'host': ip}
     r = requests.get("http://rpi.supra.tw/update.php", params=params)
     print(r)
+
+def on_btn_x():
+    GPIO.setup(27, GPIO.OUT)
+    print("screen off")
+
+def on_btn_d():
+    GPIO.setup(27, GPIO.IN)
+    print("screen on")
 
 
 for btn in Btn:
