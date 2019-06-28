@@ -61,7 +61,7 @@ class Btn(Enum):
 
 
 def on_btn_pressed(gbtn: gpiozero.Button):
-    print("on Btn pressed: " + str(gbtn.pin))
+    print("\n on Btn pressed: " + str(gbtn.pin))
 
     if gbtn == Btn.X.value:
         on_btn_x()
